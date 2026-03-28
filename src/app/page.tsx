@@ -29,12 +29,12 @@ export default async function DashboardPage() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-[#2d5a3f] text-white py-12">
+      <section className="bg-gradient-to-r from-[#8ccacf] to-[#f3d597] py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#313131]">
             City of Petaluma
           </h2>
-          <p className="mt-2 text-lg text-green-100">
+          <p className="mt-2 text-lg text-[#313131]/70">
             Blueprint for Climate Action
           </p>
         </div>
@@ -43,22 +43,22 @@ export default async function DashboardPage() {
       {/* Summary Stats */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white rounded-lg shadow p-6 text-center">
-            <p className="text-4xl font-bold text-[#1a472a]">
+          <div className="bg-white rounded-lg shadow p-6 text-center border-t-2 border-[#8ccacf]">
+            <p className="text-4xl font-bold text-[#8ccacf]">
               {actions.length}
             </p>
             <p className="text-gray-500 mt-1 text-sm font-medium">
               Total Actions
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6 text-center">
-            <p className="text-4xl font-bold text-[#1a472a]">
+          <div className="bg-white rounded-lg shadow p-6 text-center border-t-2 border-[#8ccacf]">
+            <p className="text-4xl font-bold text-[#8ccacf]">
               {sectorBreakdown.length}
             </p>
             <p className="text-gray-500 mt-1 text-sm font-medium">Sectors</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6 text-center">
-            <p className="text-4xl font-bold text-[#1a472a]">
+          <div className="bg-white rounded-lg shadow p-6 text-center border-t-2 border-[#8ccacf]">
+            <p className="text-4xl font-bold text-[#8ccacf]">
               {docs.length}
             </p>
             <p className="text-gray-500 mt-1 text-sm font-medium">Documents</p>

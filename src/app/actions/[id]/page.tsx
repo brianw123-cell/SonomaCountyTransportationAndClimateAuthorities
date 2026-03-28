@@ -27,7 +27,7 @@ export default async function ActionDetailPage({
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-6 flex items-center gap-2">
-        <Link href="/" className="hover:text-[#2d5a3f] transition-colors">
+        <Link href="/" className="text-[#8ccacf] hover:text-[#8ccacf]/80 transition-colors">
           Dashboard
         </Link>
         <span>/</span>
@@ -39,7 +39,7 @@ export default async function ActionDetailPage({
       {/* Back button */}
       <Link
         href="/"
-        className="inline-flex items-center gap-1 text-sm font-medium text-[#2d5a3f] hover:underline mb-6"
+        className="inline-flex items-center gap-1 text-sm font-medium bg-[#8ccacf] text-white px-4 py-2 rounded-lg hover:bg-[#8ccacf]/90 transition-colors mb-6"
       >
         &larr; Back to Dashboard
       </Link>
@@ -47,8 +47,8 @@ export default async function ActionDetailPage({
       {/* Main Card */}
       <div className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
         {/* Header */}
-        <div className="bg-[#2d5a3f] text-white px-6 py-5">
-          <p className="text-sm font-mono opacity-75">{action.act_id}</p>
+        <div className="bg-gradient-to-r from-[#8ccacf] to-[#f3d597] text-[#313131] px-6 py-5">
+          <p className="text-sm font-mono text-[#313131]/70">{action.act_id}</p>
           <h2 className="text-xl sm:text-2xl font-bold mt-1 leading-snug">
             {action.act_level3 ?? "Untitled Action"}
           </h2>
@@ -113,7 +113,7 @@ export default async function ActionDetailPage({
                 href={action.clearpath_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#2d5a3f] hover:underline text-sm font-medium break-all"
+                className="text-[#8ccacf] hover:underline text-sm font-medium break-all"
               >
                 {action.clearpath_url}
               </a>
@@ -136,7 +136,7 @@ function Section({
 }) {
   return (
     <div>
-      <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3 border-b border-gray-100 pb-2">
+      <h3 className="text-sm font-semibold text-[#313131] uppercase tracking-wide mb-3 border-b-2 border-[#8ccacf] pb-2">
         {title}
       </h3>
       {children}

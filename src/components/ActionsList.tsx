@@ -83,12 +83,12 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
           placeholder="Search actions..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d5a3f] focus:border-transparent"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8ccacf] focus:border-transparent"
         />
         <select
           value={sectorFilter}
           onChange={(e) => setSectorFilter(e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d5a3f]"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8ccacf]"
         >
           <option value="">All Sectors</option>
           {sectors.map((s) => (
@@ -100,7 +100,7 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
         <select
           value={timelineFilter}
           onChange={(e) => setTimelineFilter(e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d5a3f]"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8ccacf]"
         >
           <option value="">All Timelines</option>
           {timelines.map((t) => (
@@ -112,7 +112,7 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d5a3f]"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8ccacf]"
         >
           <option value="">All Statuses</option>
           {statuses.map((s) => (
@@ -141,12 +141,12 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
           return (
             <div
               key={action.act_id}
-              className="bg-white border border-gray-200 rounded-lg shadow-sm"
+              className="bg-white border border-gray-200 rounded-lg shadow-sm hover:border-l-4 hover:border-l-[#e75425] transition-all"
             >
               {/* Collapsed Row */}
               <button
                 onClick={() => toggle(action.act_id)}
-                className="w-full text-left px-4 py-3 flex items-start gap-3 hover:bg-gray-50 transition-colors"
+                className="w-full text-left px-4 py-3 flex items-start gap-3 hover:bg-gray-50 transition-colors group"
               >
                 <span className="text-gray-400 mt-0.5 flex-shrink-0">
                   {isExpanded ? "\u25BC" : "\u25B6"}
@@ -169,7 +169,7 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
 
               {/* Expanded Detail */}
               {isExpanded && (
-                <div className="px-4 pb-4 pt-1 border-t border-gray-100">
+                <div className="px-4 pb-4 pt-1 border-t border-gray-100 bg-[#f0fafa]">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
                     <Field label="Goal (Level 1)" value={action.act_level1} />
                     <Field
@@ -202,7 +202,7 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
                   <div className="mt-4">
                     <Link
                       href={`/actions/${action.act_id}`}
-                      className="text-sm font-medium text-[#2d5a3f] hover:underline"
+                      className="text-sm font-medium text-[#8ccacf] hover:underline"
                     >
                       View full detail &rarr;
                     </Link>

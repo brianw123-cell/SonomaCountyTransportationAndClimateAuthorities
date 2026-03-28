@@ -93,8 +93,8 @@ export default function ActionsList({
 
   return (
     <div>
-      {/* Summary Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      {/* Summary Stats — compact, matching documents page */}
+      <div className="grid grid-cols-3 gap-3 mb-8">
         <button
           onClick={() => {
             setSectorFilter("");
@@ -102,13 +102,13 @@ export default function ActionsList({
             setStatusFilter("");
             setSearch("");
           }}
-          className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#8ccacf] hover:shadow-lg transition-shadow cursor-pointer"
+          className="bg-white rounded-lg shadow-md px-4 py-3 text-center border-l-4 border-[#8ccacf] hover:shadow-lg transition-shadow cursor-pointer"
         >
-          <p className="text-4xl font-bold text-[#8ccacf]">{actions.length}</p>
-          <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">
+          <p className="text-2xl font-bold text-[#8ccacf]">{actions.length}</p>
+          <p className="text-[#313131]/60 text-xs font-medium uppercase tracking-wide">
             Total Actions
           </p>
-          <p className="text-xs text-[#8ccacf] mt-2">Click to show all</p>
+          <p className="text-[10px] text-[#8ccacf] mt-1">Click to show all</p>
         </button>
         <button
           onClick={() => {
@@ -117,24 +117,24 @@ export default function ActionsList({
             setStatusFilter("");
             setSearch("");
           }}
-          className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#f3d597] hover:shadow-lg transition-shadow cursor-pointer"
+          className="bg-white rounded-lg shadow-md px-4 py-3 text-center border-l-4 border-[#f3d597] hover:shadow-lg transition-shadow cursor-pointer"
         >
-          <p className="text-4xl font-bold text-[#e75425]">
+          <p className="text-2xl font-bold text-[#e75425]">
             {sectorBreakdown.length}
           </p>
-          <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">
+          <p className="text-[#313131]/60 text-xs font-medium uppercase tracking-wide">
             Sectors
           </p>
-          <p className="text-xs text-[#e75425] mt-2">Click to clear filters</p>
+          <p className="text-[10px] text-[#e75425] mt-1">Click to clear filters</p>
         </button>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#e75425]">
-          <p className="text-4xl font-bold text-[#8ccacf]">{totalDocs}</p>
-          <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">
+        <div className="bg-white rounded-lg shadow-md px-4 py-3 text-center border-l-4 border-[#e75425]">
+          <p className="text-2xl font-bold text-[#8ccacf]">{totalDocs}</p>
+          <p className="text-[#313131]/60 text-xs font-medium uppercase tracking-wide">
             Documents
           </p>
           <Link
             href="/documents"
-            className="text-xs text-[#8ccacf] hover:underline mt-2 inline-block"
+            className="text-[10px] text-[#8ccacf] hover:underline mt-1 inline-block"
           >
             View library &rarr;
           </Link>

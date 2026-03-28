@@ -8,16 +8,19 @@ const TYPE_COLORS: Record<string, string> = {
   "County Government": "bg-[#f3d597] text-[#313131]",
   "Special District": "bg-[#e75425]",
   "NGO": "bg-emerald-600",
+  "Non-Governmental Organization": "bg-emerald-600",
   "Regional Government": "bg-purple-500",
   "Private Consultant": "bg-gray-500",
+  Unknown: "bg-gray-400",
 };
 
 interface OrgListProps {
   orgs: Org[];
   orgTypes: string[];
+  typeCounts: Record<string, number>;
 }
 
-export default function OrgList({ orgs, orgTypes }: OrgListProps) {
+export default function OrgList({ orgs, orgTypes, typeCounts }: OrgListProps) {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
 
@@ -27,14 +30,70 @@ export default function OrgList({ orgs, orgTypes }: OrgListProps) {
       !q ||
       org.org_name.toLowerCase().includes(q) ||
       (org.org_acronym ?? "").toLowerCase().includes(q);
-    const matchesType = !typeFilter || org.org_type === typeFilter;
+    const matchesType = !typeFilter || (org.org_type ?? "Unknown") === typeFilter;
     return matchesSearch && matchesType;
   });
 
+  function handleTypeClick(type: string) {
+    setTypeFilter((prev) => (prev === type ? "" : type));
+  }
+
   return (
     <div>
+      {/* Type filter pills — clickable buttons */}
+      <div className="flex flex-wrap items-center gap-2 mb-6">
+        <button
+          onClick={() => {
+            setTypeFilter("");
+            setSearch("");
+          }}
+          className={`rounded-full px-4 py-1.5 text-sm font-bold shadow-sm transition-all cursor-pointer ${
+            !typeFilter
+              ? "bg-[#8ccacf] text-white shadow-md scale-105"
+              : "bg-white text-[#8ccacf] border border-[#8ccacf]/30 hover:bg-[#8ccacf]/10"
+          }`}
+        >
+          {orgs.length} Total
+        </button>
+        {orgTypes.map((type) => {
+          const isActive = typeFilter === type;
+          const colorBg = TYPE_COLORS[type] ?? "bg-gray-400";
+          return (
+            <button
+              key={type}
+              onClick={() => handleTypeClick(type)}
+              className={`rounded-full px-3 py-1.5 text-sm shadow-sm transition-all cursor-pointer ${
+                isActive
+                  ? `${colorBg} text-white shadow-md scale-105 ring-2 ring-offset-1 ring-[#313131]/20`
+                  : typeFilter && !isActive
+                    ? "bg-white text-[#313131]/40 border border-gray-200"
+                    : "bg-white text-[#313131]/70 border border-gray-200 hover:border-[#8ccacf]/50 hover:bg-[#8ccacf]/5"
+              }`}
+            >
+              <span className={`font-semibold ${isActive ? "" : "text-[#8ccacf]"}`}>
+                {typeCounts[type]}
+              </span>{" "}
+              {type}
+            </button>
+          );
+        })}
+        {typeFilter && (
+          <button
+            onClick={() => setTypeFilter("")}
+            className="text-xs text-[#e75425] hover:underline ml-1"
+          >
+            Clear &times;
+          </button>
+        )}
+      </div>
+
       <h3 className="text-lg font-semibold text-[#8ccacf] mb-4 uppercase tracking-wide">
         Organizations
+        {typeFilter && (
+          <span className="ml-2 text-sm font-normal normal-case tracking-normal text-[#313131]/60">
+            — {typeFilter}
+          </span>
+        )}
       </h3>
 
       {/* Filters */}

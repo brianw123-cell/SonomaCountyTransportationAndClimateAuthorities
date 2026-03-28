@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import NavLinks from "@/components/NavLinks";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -50,26 +51,7 @@ export default function RootLayout({
                   </h1>
                 </Link>
               </div>
-              <nav className="mt-3 sm:mt-0 flex gap-1 text-sm font-medium">
-                <Link
-                  href="/"
-                  className="px-4 py-2 rounded-md bg-[#8ccacf] text-white hover:bg-[#7ab8bd] transition-colors"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  href="/organizations"
-                  className="px-4 py-2 rounded-md text-[#313131] hover:bg-[#8ccacf]/10 transition-colors"
-                >
-                  Organizations
-                </Link>
-                <Link
-                  href="/documents"
-                  className="px-4 py-2 rounded-md text-[#313131] hover:bg-[#8ccacf]/10 transition-colors"
-                >
-                  Documents
-                </Link>
-              </nav>
+              <NavLinks />
             </div>
           </div>
         </header>

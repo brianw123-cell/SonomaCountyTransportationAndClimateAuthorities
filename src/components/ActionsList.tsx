@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Action } from "@/types/supabase";
+import type { SectorCount } from "@/types/supabase";
 
 const SECTOR_COLORS: Record<string, string> = {
   "1.00 - Built Environment": "bg-blue-500",
@@ -16,19 +17,37 @@ const SECTOR_COLORS: Record<string, string> = {
   "0.00 - Administration": "bg-gray-500",
 };
 
+const SECTOR_RING_COLORS: Record<string, string> = {
+  "1.00 - Built Environment": "ring-blue-500",
+  "2.00 - Transportation": "ring-orange-500",
+  "3.00 - Solid Waste": "ring-green-500",
+  "4.00 - Wastewater": "ring-cyan-500",
+  "5.00 - Agricultural": "ring-yellow-600",
+  "6.00 - Forest Land": "ring-emerald-600",
+  "7.00 - Climate Adaptation": "ring-purple-500",
+  "8.00 - Social Equity": "ring-pink-500",
+  "0.00 - Administration": "ring-gray-500",
+};
+
 interface ActionsListProps {
   actions: Action[];
   sectors: string[];
+  sectorBreakdown: SectorCount[];
+  totalDocs: number;
 }
 
-export default function ActionsList({ actions, sectors }: ActionsListProps) {
+export default function ActionsList({
+  actions,
+  sectors,
+  sectorBreakdown,
+  totalDocs,
+}: ActionsListProps) {
   const [search, setSearch] = useState("");
   const [sectorFilter, setSectorFilter] = useState("");
   const [timelineFilter, setTimelineFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  // Collect unique statuses and timelines from data
   const statuses = Array.from(
     new Set(actions.map((a) => a.act_status).filter(Boolean))
   ).sort() as string[];
@@ -45,17 +64,19 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
       (a.act_level3 ?? "").toLowerCase().includes(q) ||
       (a.act_sector ?? "").toLowerCase().includes(q) ||
       (a.act_id ?? "").toLowerCase().includes(q);
-
     const matchesSector = !sectorFilter || a.act_sector === sectorFilter;
     const matchesTimeline =
       !timelineFilter || a.act_timeline === timelineFilter;
     const matchesStatus = !statusFilter || a.act_status === statusFilter;
-
     return matchesSearch && matchesSector && matchesTimeline && matchesStatus;
   });
 
   function toggle(id: string) {
     setExpandedId((prev) => (prev === id ? null : id));
+  }
+
+  function handleSectorClick(sector: string) {
+    setSectorFilter((prev) => (prev === sector ? "" : sector));
   }
 
   function sectorBadge(sector: string | null) {
@@ -72,11 +93,93 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
 
   return (
     <div>
+      {/* Summary Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <button
+          onClick={() => {
+            setSectorFilter("");
+            setTimelineFilter("");
+            setStatusFilter("");
+            setSearch("");
+          }}
+          className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#8ccacf] hover:shadow-lg transition-shadow cursor-pointer"
+        >
+          <p className="text-4xl font-bold text-[#8ccacf]">{actions.length}</p>
+          <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">
+            Total Actions
+          </p>
+          <p className="text-xs text-[#8ccacf] mt-2">Click to show all</p>
+        </button>
+        <button
+          onClick={() => {
+            setSectorFilter("");
+            setTimelineFilter("");
+            setStatusFilter("");
+            setSearch("");
+          }}
+          className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#f3d597] hover:shadow-lg transition-shadow cursor-pointer"
+        >
+          <p className="text-4xl font-bold text-[#e75425]">
+            {sectorBreakdown.length}
+          </p>
+          <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">
+            Sectors
+          </p>
+          <p className="text-xs text-[#e75425] mt-2">Click to clear filters</p>
+        </button>
+        <div className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#e75425]">
+          <p className="text-4xl font-bold text-[#8ccacf]">{totalDocs}</p>
+          <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">
+            Documents
+          </p>
+          <Link
+            href="/documents"
+            className="text-xs text-[#8ccacf] hover:underline mt-2 inline-block"
+          >
+            View library &rarr;
+          </Link>
+        </div>
+      </div>
+
+      {/* Sector Breakdown — clickable filter buttons */}
+      <h3 className="text-lg font-semibold text-[#8ccacf] mb-4 uppercase tracking-wide">
+        Actions by Sector
+        {sectorFilter && (
+          <button
+            onClick={() => setSectorFilter("")}
+            className="ml-3 text-xs font-normal normal-case tracking-normal text-[#e75425] hover:underline"
+          >
+            Clear filter &times;
+          </button>
+        )}
+      </h3>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-8">
+        {sectorBreakdown.map(({ sector, count }) => {
+          const bg = SECTOR_COLORS[sector] ?? "bg-gray-400";
+          const ring = SECTOR_RING_COLORS[sector] ?? "ring-gray-400";
+          const isActive = sectorFilter === sector;
+          return (
+            <button
+              key={sector}
+              onClick={() => handleSectorClick(sector)}
+              className={`${bg} text-white rounded-lg p-4 shadow text-left transition-all cursor-pointer hover:scale-[1.03] hover:shadow-lg ${
+                isActive ? `ring-4 ${ring} ring-offset-2 scale-[1.03]` : ""
+              } ${!isActive && sectorFilter ? "opacity-50" : ""}`}
+            >
+              <p className="text-2xl font-bold">{count}</p>
+              <p className="text-sm mt-1 leading-tight opacity-90">{sector}</p>
+              {isActive && (
+                <p className="text-xs mt-2 opacity-75">Click to clear</p>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Filters */}
       <h3 className="text-lg font-semibold text-[#8ccacf] mb-4 uppercase tracking-wide">
         Climate Actions
       </h3>
-
-      {/* Filters */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
         <input
           type="text"
@@ -126,6 +229,11 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
       {/* Count */}
       <p className="text-sm text-gray-500 mb-3">
         Showing {filtered.length} of {actions.length} actions
+        {sectorFilter && (
+          <span className="ml-1 font-medium text-[#313131]">
+            in {sectorFilter}
+          </span>
+        )}
       </p>
 
       {/* Action Cards */}
@@ -143,7 +251,6 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
               key={action.act_id}
               className="bg-white border border-gray-200 rounded-lg shadow-sm hover:border-l-4 hover:border-l-[#e75425] transition-all"
             >
-              {/* Collapsed Row */}
               <button
                 onClick={() => toggle(action.act_id)}
                 className="w-full text-left px-4 py-3 flex items-start gap-3 hover:bg-gray-50 transition-colors group"
@@ -167,7 +274,6 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
                 </div>
               </button>
 
-              {/* Expanded Detail */}
               {isExpanded && (
                 <div className="px-4 pb-4 pt-1 border-t border-gray-100 bg-[#f0fafa]">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-sm">

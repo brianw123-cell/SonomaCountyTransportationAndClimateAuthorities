@@ -28,71 +28,27 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="bg-[#8ccacf] py-14">
+      {/* Hero — compact */}
+      <section className="bg-[#8ccacf] py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
             City of Petaluma
           </h2>
-          <p className="mt-2 text-lg text-white/80 font-medium">
+          <p className="mt-1 text-sm sm:text-base text-white/80 font-medium">
             Blueprint for Climate Action
           </p>
-          <div className="mt-4 w-20 h-[3px] bg-[#f3d597] mx-auto rounded-full" />
+          <div className="mt-2 w-14 h-[2px] bg-[#f3d597] mx-auto rounded-full" />
         </div>
       </section>
 
-      {/* Summary Stats */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#8ccacf]">
-            <p className="text-4xl font-bold text-[#8ccacf]">
-              {actions.length}
-            </p>
-            <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">
-              Total Actions
-            </p>
-          </div>
-          <div className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#f3d597]">
-            <p className="text-4xl font-bold text-[#e75425]">
-              {sectorBreakdown.length}
-            </p>
-            <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">Sectors</p>
-          </div>
-          <div className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#e75425]">
-            <p className="text-4xl font-bold text-[#8ccacf]">
-              {docs.length}
-            </p>
-            <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">Documents</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Sector Breakdown */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-        <h3 className="text-lg font-semibold text-[#8ccacf] mb-4 uppercase tracking-wide">
-          Actions by Sector
-        </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-          {sectorBreakdown.map(({ sector, count }) => {
-            const bg = SECTOR_COLORS[sector] ?? "bg-gray-400";
-            return (
-              <div
-                key={sector}
-                className={`${bg} text-white rounded-lg p-4 shadow`}
-              >
-                <p className="text-2xl font-bold">{count}</p>
-                <p className="text-sm mt-1 leading-tight opacity-90">
-                  {sector}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Actions List */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-12">
-        <ActionsList actions={actions} sectors={sectors} />
+      {/* Everything interactive lives in ActionsList */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-12">
+        <ActionsList
+          actions={actions}
+          sectors={sectors}
+          sectorBreakdown={sectorBreakdown}
+          totalDocs={docs.length}
+        />
       </section>
 
       {/* Footer note */}

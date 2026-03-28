@@ -19,57 +19,39 @@ export default async function OrganizationsPage() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="bg-[#8ccacf] py-14">
+      {/* Hero — compact */}
+      <section className="bg-[#8ccacf] py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+          <h2 className="text-2xl font-bold tracking-tight text-white">
             Organizational Directory
           </h2>
-          <p className="mt-2 text-lg text-white/80 font-medium">
+          <p className="mt-1 text-sm text-white/80 font-medium">
             Partner organizations across Sonoma County
           </p>
-          <div className="mt-4 w-20 h-[3px] bg-[#f3d597] mx-auto rounded-full" />
+          <div className="mt-2 w-12 h-[2px] bg-[#f3d597] mx-auto rounded-full" />
         </div>
       </section>
 
-      {/* Summary Stats */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          <div className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#8ccacf]">
-            <p className="text-4xl font-bold text-[#8ccacf]">{orgs.length}</p>
-            <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">
-              Total Organizations
-            </p>
-          </div>
-          {orgTypes.map((type, i) => {
-            const borders = [
-              "border-[#f3d597]",
-              "border-[#e75425]",
-              "border-[#8ccacf]",
-              "border-[#f3d597]",
-              "border-[#e75425]",
-              "border-[#8ccacf]",
-            ];
-            const border = borders[i % borders.length];
-            return (
-              <div
-                key={type}
-                className={`bg-white rounded-lg shadow-md p-6 text-center border-l-4 ${border}`}
-              >
-                <p className="text-4xl font-bold text-[#8ccacf]">
-                  {typeCounts[type]}
-                </p>
-                <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">
-                  {type}
-                </p>
-              </div>
-            );
-          })}
+      {/* Compact Stats Bar */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div className="flex flex-wrap items-center gap-3 text-sm">
+          <span className="bg-white shadow-sm rounded-full px-4 py-1.5 border-l-4 border-[#8ccacf] font-bold text-[#8ccacf]">
+            {orgs.length} Total
+          </span>
+          {orgTypes.map((type) => (
+            <span
+              key={type}
+              className="bg-white shadow-sm rounded-full px-3 py-1.5 text-[#313131]/70"
+            >
+              <span className="font-semibold text-[#8ccacf]">{typeCounts[type]}</span>{" "}
+              {type}
+            </span>
+          ))}
         </div>
       </section>
 
       {/* Org List */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-12">
         <OrgList orgs={orgs} orgTypes={orgTypes} />
       </section>
     </div>

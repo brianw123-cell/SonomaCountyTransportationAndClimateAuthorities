@@ -6,6 +6,7 @@ import type { Doc } from "@/types/supabase";
 interface DocListProps {
   docs: Doc[];
   docTypes: string[];
+  evaluatedCount: number;
 }
 
 function formatDate(dateStr: string | null): string {
@@ -27,18 +28,8 @@ function EvalIndicator({ status }: { status: string | null }) {
   if (status === "Y") {
     return (
       <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-100 px-2 py-0.5 rounded-full">
-        <svg
-          className="w-3.5 h-3.5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2.5}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M5 13l4 4L19 7"
-          />
+        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
         </svg>
         Evaluated
       </span>
@@ -47,18 +38,8 @@ function EvalIndicator({ status }: { status: string | null }) {
   if (status === "N") {
     return (
       <span className="inline-flex items-center gap-1 text-xs font-medium text-red-700 bg-red-100 px-2 py-0.5 rounded-full">
-        <svg
-          className="w-3.5 h-3.5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2.5}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M6 18L18 6M6 6l12 12"
-          />
+        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
         Not Evaluated
       </span>
@@ -72,10 +53,12 @@ function EvalIndicator({ status }: { status: string | null }) {
   );
 }
 
-export default function DocList({ docs, docTypes }: DocListProps) {
+export default function DocList({ docs, docTypes, evaluatedCount }: DocListProps) {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [evalFilter, setEvalFilter] = useState("");
+
+  const evalPercent = docs.length > 0 ? Math.round((evaluatedCount / docs.length) * 100) : 0;
 
   const filtered = docs.filter((doc) => {
     const q = search.toLowerCase();
@@ -94,10 +77,77 @@ export default function DocList({ docs, docTypes }: DocListProps) {
     return matchesSearch && matchesType && matchesEval;
   });
 
+  function clearAll() {
+    setSearch("");
+    setTypeFilter("");
+    setEvalFilter("");
+  }
+
   return (
     <div>
+      {/* Stat Cards — clickable filters with progress */}
+      <div className="grid grid-cols-3 gap-3 mb-6">
+        <button
+          onClick={clearAll}
+          className="bg-white rounded-lg shadow-md px-4 py-3 text-center border-l-4 border-[#8ccacf] hover:shadow-lg transition-shadow cursor-pointer"
+        >
+          <p className="text-2xl font-bold text-[#8ccacf]">{docs.length}</p>
+          <p className="text-[#313131]/60 text-xs font-medium uppercase tracking-wide">
+            Total Documents
+          </p>
+          <p className="text-[10px] text-[#8ccacf] mt-1">Click to show all</p>
+        </button>
+        <button
+          onClick={() => {
+            setTypeFilter("");
+            setEvalFilter("");
+            setSearch("");
+          }}
+          className="bg-white rounded-lg shadow-md px-4 py-3 text-center border-l-4 border-[#f3d597] hover:shadow-lg transition-shadow cursor-pointer"
+        >
+          <p className="text-2xl font-bold text-[#e75425]">{docTypes.length}</p>
+          <p className="text-[#313131]/60 text-xs font-medium uppercase tracking-wide">
+            Document Types
+          </p>
+          <p className="text-[10px] text-[#e75425] mt-1">Click to clear filters</p>
+        </button>
+        <button
+          onClick={() => {
+            setEvalFilter((prev) => (prev === "Y" ? "" : "Y"));
+            setTypeFilter("");
+            setSearch("");
+          }}
+          className={`bg-white rounded-lg shadow-md px-4 py-3 text-center border-l-4 border-[#e75425] hover:shadow-lg transition-shadow cursor-pointer ${
+            evalFilter === "Y" ? "ring-2 ring-[#e75425] ring-offset-1" : ""
+          }`}
+        >
+          <p className="text-2xl font-bold text-[#8ccacf]">{evaluatedCount}</p>
+          <p className="text-[#313131]/60 text-xs font-medium uppercase tracking-wide">
+            Evaluated
+          </p>
+          {/* Progress bar */}
+          <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
+            <div
+              className="bg-[#8ccacf] h-1.5 rounded-full transition-all"
+              style={{ width: `${evalPercent}%` }}
+            />
+          </div>
+          <p className="text-[10px] text-[#313131]/50 mt-1">
+            {evalPercent}% of {docs.length} — click to filter
+          </p>
+        </button>
+      </div>
+
       <h3 className="text-lg font-semibold text-[#8ccacf] mb-4 uppercase tracking-wide">
         Documents
+        {(typeFilter || evalFilter || search) && (
+          <button
+            onClick={clearAll}
+            className="ml-3 text-xs font-normal normal-case tracking-normal text-[#e75425] hover:underline"
+          >
+            Clear filters &times;
+          </button>
+        )}
       </h3>
 
       {/* Filters */}
@@ -116,9 +166,7 @@ export default function DocList({ docs, docTypes }: DocListProps) {
         >
           <option value="">All Types</option>
           {docTypes.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
+            <option key={t} value={t}>{t}</option>
           ))}
         </select>
         <select
@@ -138,7 +186,7 @@ export default function DocList({ docs, docTypes }: DocListProps) {
         Showing {filtered.length} of {docs.length} documents
       </p>
 
-      {/* Doc Cards (list style) */}
+      {/* Doc Cards */}
       <div className="space-y-3">
         {filtered.map((doc) => (
           <div
@@ -149,9 +197,7 @@ export default function DocList({ docs, docTypes }: DocListProps) {
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-[#313131]">{doc.doc_name}</p>
                 {doc.org_parent && (
-                  <p className="text-sm text-gray-400 mt-0.5">
-                    {doc.org_parent}
-                  </p>
+                  <p className="text-sm text-gray-400 mt-0.5">{doc.org_parent}</p>
                 )}
                 <div className="flex flex-wrap items-center gap-2 mt-2">
                   {doc.doc_type && (
@@ -172,7 +218,6 @@ export default function DocList({ docs, docTypes }: DocListProps) {
                   </p>
                 )}
               </div>
-
               {doc.doc_url && (
                 <a
                   href={doc.doc_url}

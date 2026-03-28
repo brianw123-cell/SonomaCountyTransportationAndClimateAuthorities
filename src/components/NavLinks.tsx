@@ -2,19 +2,46 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
+import { supabase } from "@/lib/supabase"
 
-const links = [
+const publicLinks = [
   { href: "/", label: "Dashboard" },
   { href: "/organizations", label: "Organizations" },
   { href: "/documents", label: "Documents" },
+  { href: "/emissions", label: "Emissions" },
 ]
 
 export default function NavLinks() {
   const pathname = usePathname()
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+  useEffect(() => {
+    async function checkAuth() {
+      const { data: { user } } = await supabase.auth.getUser()
+      setIsAuthenticated(!!user)
+    }
+    checkAuth()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session?.user)
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
+
+  const allLinks = [
+    ...publicLinks,
+    isAuthenticated
+      ? { href: "/admin", label: "Admin" }
+      : { href: "/login", label: "Login" },
+  ]
 
   return (
     <nav className="mt-3 sm:mt-0 flex gap-1 text-sm font-medium">
-      {links.map(({ href, label }) => {
+      {allLinks.map(({ href, label }) => {
         const isActive =
           href === "/" ? pathname === "/" : pathname.startsWith(href)
 

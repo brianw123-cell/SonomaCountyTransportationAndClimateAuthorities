@@ -47,11 +47,12 @@ export default async function ActionDetailPage({
       {/* Main Card */}
       <div className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#8ccacf] to-[#f3d597] text-[#313131] px-6 py-5">
-          <p className="text-sm font-mono text-[#313131]/70">{action.act_id}</p>
+        <div className="bg-[#8ccacf] text-white px-6 py-6">
+          <p className="text-sm font-mono text-white/70">{action.act_id}</p>
           <h2 className="text-xl sm:text-2xl font-bold mt-1 leading-snug">
             {action.act_level3 ?? "Untitled Action"}
           </h2>
+          <div className="mt-3 w-16 h-[2px] bg-[#f3d597] rounded-full" />
         </div>
 
         <div className="px-6 py-6 space-y-8">
@@ -136,7 +137,7 @@ function Section({
 }) {
   return (
     <div>
-      <h3 className="text-sm font-semibold text-[#313131] uppercase tracking-wide mb-3 border-b-2 border-[#8ccacf] pb-2">
+      <h3 className="text-sm font-semibold text-[#8ccacf] uppercase tracking-wide mb-3 border-b-2 border-[#f3d597] pb-2">
         {title}
       </h3>
       {children}

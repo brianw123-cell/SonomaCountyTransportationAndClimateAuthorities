@@ -72,7 +72,7 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
 
   return (
     <div>
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">
+      <h3 className="text-lg font-semibold text-[#8ccacf] mb-4 uppercase tracking-wide">
         Climate Actions
       </h3>
 
@@ -202,7 +202,7 @@ export default function ActionsList({ actions, sectors }: ActionsListProps) {
                   <div className="mt-4">
                     <Link
                       href={`/actions/${action.act_id}`}
-                      className="text-sm font-medium text-[#8ccacf] hover:underline"
+                      className="inline-flex items-center gap-1 text-sm font-medium bg-[#8ccacf] text-white px-3 py-1.5 rounded-md hover:bg-[#7ab8bd] transition-colors"
                     >
                       View full detail &rarr;
                     </Link>

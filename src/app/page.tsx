@@ -29,46 +29,47 @@ export default async function DashboardPage() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gradient-to-r from-[#8ccacf] to-[#f3d597] py-12">
+      <section className="bg-[#8ccacf] py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#313131]">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
             City of Petaluma
           </h2>
-          <p className="mt-2 text-lg text-[#313131]/70">
+          <p className="mt-2 text-lg text-white/80 font-medium">
             Blueprint for Climate Action
           </p>
+          <div className="mt-4 w-20 h-[3px] bg-[#f3d597] mx-auto rounded-full" />
         </div>
       </section>
 
       {/* Summary Stats */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white rounded-lg shadow p-6 text-center border-t-2 border-[#8ccacf]">
+          <div className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#8ccacf]">
             <p className="text-4xl font-bold text-[#8ccacf]">
               {actions.length}
             </p>
-            <p className="text-gray-500 mt-1 text-sm font-medium">
+            <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">
               Total Actions
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6 text-center border-t-2 border-[#8ccacf]">
-            <p className="text-4xl font-bold text-[#8ccacf]">
+          <div className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#f3d597]">
+            <p className="text-4xl font-bold text-[#e75425]">
               {sectorBreakdown.length}
             </p>
-            <p className="text-gray-500 mt-1 text-sm font-medium">Sectors</p>
+            <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">Sectors</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6 text-center border-t-2 border-[#8ccacf]">
+          <div className="bg-white rounded-lg shadow-md p-6 text-center border-l-4 border-[#e75425]">
             <p className="text-4xl font-bold text-[#8ccacf]">
               {docs.length}
             </p>
-            <p className="text-gray-500 mt-1 text-sm font-medium">Documents</p>
+            <p className="text-[#313131]/60 mt-1 text-sm font-medium uppercase tracking-wide">Documents</p>
           </div>
         </div>
       </section>
 
       {/* Sector Breakdown */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-        <h3 className="text-lg font-semibold text-gray-700 mb-4">
+        <h3 className="text-lg font-semibold text-[#8ccacf] mb-4 uppercase tracking-wide">
           Actions by Sector
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">

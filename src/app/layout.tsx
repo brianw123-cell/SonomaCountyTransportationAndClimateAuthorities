@@ -45,27 +45,27 @@ export default function RootLayout({
                     className="h-auto w-[200px]"
                     priority
                   />
-                  <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#313131]">
+                  <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#8ccacf]">
                     Climate Action Tracker
                   </h1>
                 </Link>
               </div>
-              <nav className="mt-3 sm:mt-0 flex gap-6 text-sm font-medium">
+              <nav className="mt-3 sm:mt-0 flex gap-1 text-sm font-medium">
                 <Link
                   href="/"
-                  className="text-[#313131] hover:text-[#8ccacf] active:text-[#e75425] transition-colors"
+                  className="px-4 py-2 rounded-md bg-[#8ccacf] text-white hover:bg-[#7ab8bd] transition-colors"
                 >
                   Dashboard
                 </Link>
                 <Link
                   href="/organizations"
-                  className="text-[#313131] hover:text-[#8ccacf] active:text-[#e75425] transition-colors"
+                  className="px-4 py-2 rounded-md text-[#313131] hover:bg-[#8ccacf]/10 transition-colors"
                 >
                   Organizations
                 </Link>
                 <Link
                   href="/documents"
-                  className="text-[#313131] hover:text-[#8ccacf] active:text-[#e75425] transition-colors"
+                  className="px-4 py-2 rounded-md text-[#313131] hover:bg-[#8ccacf]/10 transition-colors"
                 >
                   Documents
                 </Link>
@@ -81,9 +81,11 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
 
         {/* Footer */}
-        <footer className="bg-gradient-to-r from-[#8ccacf] to-[#f3d597] text-white text-center py-6 text-sm">
-          <p className="font-medium">Proof of Concept &mdash; Petaluma MVP</p>
-          <p className="mt-1 opacity-90">
+        <footer className="bg-[#8ccacf] text-white text-center py-8 text-sm">
+          <p className="font-semibold text-base">SCTCA Climate Action Tracker</p>
+          <p className="mt-1 opacity-90">Proof of Concept &mdash; Petaluma MVP</p>
+          <div className="mt-3 w-16 h-[2px] bg-[#f3d597] mx-auto" />
+          <p className="mt-3 opacity-80">
             411 King Street, Santa Rosa, CA 95404 | 707.565.5373
           </p>
         </footer>

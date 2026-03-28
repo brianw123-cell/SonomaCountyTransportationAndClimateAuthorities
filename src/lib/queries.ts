@@ -49,6 +49,15 @@ export async function getOrgChildren(orgId: string) {
 // DOCUMENT QUERIES
 // ============================================================
 
+/** Get all documents, optionally filtered by type */
+export async function getDocs(docType?: string) {
+  let query = supabase.from('docs').select('*').order('doc_name')
+  if (docType) query = query.eq('doc_type', docType)
+  const { data, error } = await query
+  if (error) throw error
+  return data ?? []
+}
+
 /** Get documents for an organization (via doc_org junction) */
 export async function getDocsForOrg(orgId: string) {
   const { data: rels, error: relError } = await supabase

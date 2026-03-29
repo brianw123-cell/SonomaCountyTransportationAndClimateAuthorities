@@ -108,6 +108,11 @@ export default function AdminDashboard() {
       title: 'GHG Data Refresh',
       description: 'Upload new GHG inventory data to refresh the emissions dashboard.',
     },
+    {
+      href: '/admin/data-health',
+      title: 'Data Health',
+      description: 'Audit data quality, find missing fields, duplicates, and apply bulk fixes.',
+    },
   ]
 
   return (

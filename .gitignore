@@ -39,6 +39,9 @@ Thumbs.db
 *.swp
 *.swo
 
+# Claude Code
+.claude/
+
 # Data files (large, reference only — don't bloat the repo)
 data/*.xlsx
 data/*.pdf

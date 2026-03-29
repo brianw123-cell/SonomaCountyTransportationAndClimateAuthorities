@@ -64,6 +64,21 @@ export default function AdminDashboard() {
       description: 'Add a new project and link it to actions and organizations.',
     },
     {
+      href: '/admin/orgs/new',
+      title: 'Add Organization',
+      description: 'Register a new organization in the climate action tracker.',
+    },
+    {
+      href: '/admin/docs/new',
+      title: 'Add Document',
+      description: 'Add a climate action document and link it to an organization.',
+    },
+    {
+      href: '/admin/funding/new',
+      title: 'Add Funding',
+      description: 'Track grants, loans, and other funding sources for climate projects.',
+    },
+    {
       href: '/organizations',
       title: 'Manage Organizations',
       description: 'View the organizational directory and hierarchy.',

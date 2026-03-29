@@ -9,6 +9,9 @@ const publicLinks = [
   { href: "/", label: "Dashboard" },
   { href: "/organizations", label: "Organizations" },
   { href: "/documents", label: "Documents" },
+  { href: "/transitions", label: "Transitions" },
+  { href: "/projects", label: "Projects" },
+  { href: "/funding", label: "Funding" },
   { href: "/emissions", label: "Emissions" },
 ]
 

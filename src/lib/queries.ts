@@ -345,6 +345,47 @@ export async function getTrnTypes() {
 }
 
 // ============================================================
+// JURISDICTION SWITCHER QUERIES
+// ============================================================
+
+/** Get only orgs that have at least one action (via doc_org -> act_doc traversal) */
+export async function getOrgsWithActions() {
+  // Step 1: Get all doc_org records
+  const { data: docOrgRels, error: doError } = await supabase
+    .from('doc_org')
+    .select('rel_from, rel_to')
+  if (doError) throw doError
+
+  // Step 2: Get all act_doc records
+  const { data: actDocRels, error: adError } = await supabase
+    .from('act_doc')
+    .select('rel_from')
+  if (adError) throw adError
+
+  // Step 3: Cross-reference — find doc IDs that have at least one action
+  const docsWithActions = new Set(actDocRels?.map((r) => r.rel_from) ?? [])
+
+  // Step 4: Find org IDs whose docs appear in the actions set
+  const orgIdsWithActions = new Set<string>()
+  for (const rel of docOrgRels ?? []) {
+    if (docsWithActions.has(rel.rel_to)) {
+      orgIdsWithActions.add(rel.rel_from)
+    }
+  }
+
+  if (orgIdsWithActions.size === 0) return []
+
+  // Step 5: Fetch those orgs
+  const { data, error } = await supabase
+    .from('orgs')
+    .select('org_id, org_name, org_acronym')
+    .in('org_id', Array.from(orgIdsWithActions))
+    .order('org_name')
+  if (error) throw error
+  return (data ?? []) as { org_id: string; org_name: string; org_acronym: string | null }[]
+}
+
+// ============================================================
 // DASHBOARD / AGGREGATE QUERIES
 // ============================================================
 

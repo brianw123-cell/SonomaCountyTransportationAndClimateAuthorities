@@ -34,6 +34,10 @@ interface ActionsListProps {
   sectors: string[];
   sectorBreakdown: SectorCount[];
   totalDocs: number;
+  selectedOrgId: string;
+  selectedOrgName: string;
+  docName: string;
+  allOrgs: { org_id: string; org_name: string; org_acronym: string | null }[];
 }
 
 export default function ActionsList({
@@ -41,6 +45,10 @@ export default function ActionsList({
   sectors,
   sectorBreakdown,
   totalDocs,
+  selectedOrgId,
+  selectedOrgName,
+  docName,
+  allOrgs,
 }: ActionsListProps) {
   const [search, setSearch] = useState("");
   const [sectorFilter, setSectorFilter] = useState("");
@@ -93,6 +101,37 @@ export default function ActionsList({
 
   return (
     <div>
+      {/* Jurisdiction Selector */}
+      {allOrgs.length > 1 && (
+        <div className="mb-6">
+          <h3 className="text-xs font-semibold text-[#313131]/50 uppercase tracking-wide mb-2">
+            Select Jurisdiction
+          </h3>
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+            {allOrgs.map((org) => {
+              const isSelected = org.org_id === selectedOrgId;
+              const label = org.org_acronym || org.org_name;
+              return (
+                <button
+                  key={org.org_id}
+                  onClick={() => {
+                    window.location.href = `/?org=${org.org_id}`;
+                  }}
+                  title={org.org_name}
+                  className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
+                    isSelected
+                      ? "bg-[#8ccacf] text-white border-[#8ccacf]"
+                      : "bg-white text-[#313131] border-gray-300 hover:text-[#8ccacf] hover:border-[#8ccacf]"
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Summary Stats — compact, matching documents page */}
       <div className="grid grid-cols-3 gap-3 mb-8">
         <button

@@ -14,6 +14,7 @@ const publicLinks = [
   { href: "/funding", label: "Funding" },
   { href: "/contacts", label: "Contacts" },
   { href: "/emissions", label: "Emissions" },
+  { href: "/reports", label: "Reports" },
 ]
 
 export default function NavLinks() {

@@ -35,22 +35,24 @@ export default function RootLayout({
         {/* Header */}
         <header className="bg-white shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-4">
-              <div className="flex items-center gap-4">
-                <Link href="/" className="hover:opacity-90 transition-opacity flex items-center gap-4">
-                  <Image
-                    src="https://sctca.ca.gov/wp-content/uploads/2025/10/SCTCA-2025-full-color400.png"
-                    alt="SCTCA Logo"
-                    width={200}
-                    height={60}
-                    className="h-auto w-[200px]"
-                    priority
-                  />
-                  <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#8ccacf]">
-                    Climate Action Tracker
-                  </h1>
-                </Link>
-              </div>
+            {/* Top row: logo + title */}
+            <div className="flex items-center gap-4 pt-3 pb-2">
+              <Link href="/" className="hover:opacity-90 transition-opacity flex items-center gap-3">
+                <Image
+                  src="https://sctca.ca.gov/wp-content/uploads/2025/10/SCTCA-2025-full-color400.png"
+                  alt="SCTCA Logo"
+                  width={160}
+                  height={48}
+                  className="h-auto w-[140px] sm:w-[160px]"
+                  priority
+                />
+                <h1 className="text-lg sm:text-xl font-bold tracking-tight text-[#8ccacf]">
+                  Climate Action Tracker
+                </h1>
+              </Link>
+            </div>
+            {/* Nav row: full width below logo */}
+            <div className="pb-2 -mx-1 overflow-x-auto">
               <NavLinks />
             </div>
           </div>

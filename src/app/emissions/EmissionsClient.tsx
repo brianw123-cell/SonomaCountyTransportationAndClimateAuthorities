@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { YearTotal, SectorTotal, PerCapitaMetrics } from "@/lib/ghg-queries";
+import ExportButton from "@/components/ExportButton";
 
 const SECTOR_COLORS: Record<string, string> = {
   Transportation: "#e75425",
@@ -48,6 +49,17 @@ export default function EmissionsClient({ jurisdictions, allData }: Props) {
   const { trend, sectors, perCapita, baselineYear, latestYear, baselineTotal, latestTotal, changePercent } = data;
   const maxBar = Math.max(...trend.map((t) => t.total), 1);
   const dominantSector = sectors.length > 0 ? sectors[0] : null;
+
+  const exportData = useMemo(() => {
+    const rows: Record<string, unknown>[] = [];
+    for (const t of trend) {
+      rows.push({ jurisdiction: selected, year: t.year, type: "Annual Total", sector: "", total_mtco2e: t.total });
+    }
+    for (const s of sectors) {
+      rows.push({ jurisdiction: selected, year: latestYear, type: "Sector Breakdown", sector: s.sector, total_mtco2e: s.total });
+    }
+    return rows;
+  }, [trend, sectors, selected, latestYear]);
 
   return (
     <div>
@@ -279,7 +291,14 @@ export default function EmissionsClient({ jurisdictions, allData }: Props) {
           </section>
         )}
 
-        {/* Navigation buttons */}
+        {/* Export + Navigation buttons */}
+        <div className="flex justify-center mb-2">
+          <ExportButton
+            data={exportData}
+            filename={`ghg-emissions-${selected.toLowerCase().replace(/\s+/g, "-")}`}
+            label={`Export ${selected} Data`}
+          />
+        </div>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/emissions/compare"

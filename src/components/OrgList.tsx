@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Org } from "@/types/supabase";
+import ExportButton from "@/components/ExportButton";
 
 const TYPE_COLORS: Record<string, string> = {
   "Local Municipality": "bg-[#8ccacf]",
@@ -40,7 +41,14 @@ export default function OrgList({ orgs, orgTypes, typeCounts }: OrgListProps) {
 
   return (
     <div>
-      {/* Type filter pills — clickable buttons */}
+      {/* Export + Type filter pills */}
+      <div className="flex items-center gap-3 mb-4">
+        <ExportButton
+          data={orgs as unknown as Record<string, unknown>[]}
+          filename="organizations"
+          label="Export Organizations"
+        />
+      </div>
       <div className="flex flex-wrap items-center gap-2 mb-6">
         <button
           onClick={() => {

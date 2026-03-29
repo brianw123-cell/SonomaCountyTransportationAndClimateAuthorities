@@ -12,6 +12,7 @@ const publicLinks = [
   { href: "/transitions", label: "Transitions" },
   { href: "/projects", label: "Projects" },
   { href: "/funding", label: "Funding" },
+  { href: "/contacts", label: "Contacts" },
   { href: "/emissions", label: "Emissions" },
 ]
 

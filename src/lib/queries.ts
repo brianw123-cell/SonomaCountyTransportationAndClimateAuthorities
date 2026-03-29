@@ -267,6 +267,50 @@ export async function getResourcesForOrg(orgId: string) {
 }
 
 // ============================================================
+// INDIVIDUAL QUERIES
+// ============================================================
+
+/** Get all individuals */
+export async function getIndividuals() {
+  const { data, error } = await supabase.from('individuals').select('*').order('ind_name')
+  if (error) throw error
+  return data ?? []
+}
+
+/** Get individuals with their org links (from org_ind junction) */
+export async function getIndividualsWithOrgs() {
+  const { data: individuals, error: indError } = await supabase
+    .from('individuals')
+    .select('*')
+    .order('ind_name')
+  if (indError) throw indError
+
+  const { data: links, error: linkError } = await supabase
+    .from('org_ind')
+    .select('*')
+  if (linkError) throw linkError
+
+  const { data: orgs, error: orgError } = await supabase
+    .from('orgs')
+    .select('org_id, org_name')
+  if (orgError) throw orgError
+
+  const orgMap = new Map(orgs?.map((o) => [o.org_id, o.org_name]) ?? [])
+
+  return (individuals ?? []).map((ind) => {
+    const orgLinks = (links ?? []).filter((l) => l.rel_to === ind.ind_id)
+    return {
+      ...ind,
+      orgs: orgLinks.map((l) => ({
+        org_id: l.rel_from,
+        org_name: orgMap.get(l.rel_from) ?? l.name_from ?? 'Unknown',
+        ind_role: l.ind_role ?? null,
+      })),
+    }
+  })
+}
+
+// ============================================================
 // ENUM / LOOKUP QUERIES
 // ============================================================
 

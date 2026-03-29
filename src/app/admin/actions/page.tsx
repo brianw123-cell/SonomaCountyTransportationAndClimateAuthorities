@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { updateActionStatus } from '@/lib/mutations'
+import { getCurrentUserProfile, type UserProfile } from '@/lib/auth-helpers'
 import type { Action } from '@/types/supabase'
 
 const ACTION_STATUSES = ['Not Started', 'Planning', 'In Progress', 'Ongoing', 'Complete', 'On Hold']
@@ -17,6 +18,7 @@ const ACTION_TIMELINES = [
 export default function AdminActionsPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
+  const [profile, setProfile] = useState<UserProfile | null>(null)
   const [actions, setActions] = useState<Action[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedAction, setSelectedAction] = useState<Action | null>(null)
@@ -40,12 +42,20 @@ export default function AdminActionsPage() {
         return
       }
 
-      // Fetch Petaluma actions
-      const { data, error: fetchError } = await supabase
-        .from('actions')
-        .select('*')
-        .ilike('org_name', '%Petaluma%')
-        .order('act_id')
+      const userProfile = await getCurrentUserProfile()
+      setProfile(userProfile)
+
+      // Role-aware query: sctca_staff sees all, jurisdiction_staff sees their org only
+      let query = supabase.from('actions').select('*').order('act_id')
+
+      if (userProfile?.role === 'jurisdiction_staff' && userProfile.orgName) {
+        query = query.ilike('org_name', `%${userProfile.orgName}%`)
+      } else if (userProfile?.role !== 'sctca_staff') {
+        // Default: show Petaluma actions for viewers / unassigned roles
+        query = query.ilike('org_name', '%Petaluma%')
+      }
+
+      const { data, error: fetchError } = await query
 
       if (fetchError) {
         setError(fetchError.message)
@@ -128,7 +138,11 @@ export default function AdminActionsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-white">Update Action Status</h1>
           <p className="mt-2 text-white/80 text-sm">
-            Search for a Petaluma climate action and update its status
+            {profile?.role === 'sctca_staff'
+              ? 'Showing all climate actions across all organizations'
+              : profile?.role === 'jurisdiction_staff' && profile.orgName
+              ? `Showing actions for ${profile.orgName}`
+              : 'Search for a Petaluma climate action and update its status'}
           </p>
         </div>
       </div>

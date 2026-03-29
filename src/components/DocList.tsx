@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Doc } from "@/types/supabase";
+import ExportButton from "@/components/ExportButton";
 
 interface DocListProps {
   docs: Doc[];
@@ -85,6 +86,15 @@ export default function DocList({ docs, docTypes, evaluatedCount }: DocListProps
 
   return (
     <div>
+      {/* Export */}
+      <div className="flex items-center gap-3 mb-4">
+        <ExportButton
+          data={docs as unknown as Record<string, unknown>[]}
+          filename="documents"
+          label="Export Documents"
+        />
+      </div>
+
       {/* Stat Cards — clickable filters with progress */}
       <div className="grid grid-cols-3 gap-3 mb-6">
         <button

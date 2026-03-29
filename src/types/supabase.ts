@@ -91,6 +91,17 @@ export interface Resource {
   updated_at: string | null
 }
 
+export interface Individual {
+  ind_id: string
+  ind_name: string
+  ind_email: string | null
+  ind_title: string | null
+  ind_phone: string | null
+  ind_notes: string | null
+  created_at: string | null
+  updated_at: string | null
+}
+
 export interface DocWithActions extends Doc {
   actions: Action[]
 }

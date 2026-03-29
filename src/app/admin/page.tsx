@@ -4,11 +4,13 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import { getCurrentUserProfile, type UserProfile } from '@/lib/auth-helpers'
 import type { User } from '@supabase/supabase-js'
 
 export default function AdminDashboard() {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
+  const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({ actions: 0, projects: 0, orgs: 0 })
 
@@ -20,6 +22,9 @@ export default function AdminDashboard() {
         return
       }
       setUser(currentUser)
+
+      const userProfile = await getCurrentUserProfile()
+      setProfile(userProfile)
 
       // Fetch quick stats
       const [actRes, prjRes, orgRes] = await Promise.all([
@@ -83,6 +88,26 @@ export default function AdminDashboard() {
       title: 'Manage Organizations',
       description: 'View the organizational directory and hierarchy.',
     },
+    {
+      href: '/admin/contacts/new',
+      title: 'Add Contact',
+      description: 'Register a new individual and link them to an organization.',
+    },
+    {
+      href: '/admin/import',
+      title: 'Import Data',
+      description: 'Bulk import CSV data into any database table.',
+    },
+    {
+      href: '/admin/roles',
+      title: 'Manage Roles',
+      description: 'Set user roles and organization assignments for access control.',
+    },
+    {
+      href: '/admin/ghg-upload',
+      title: 'GHG Data Refresh',
+      description: 'Upload new GHG inventory data to refresh the emissions dashboard.',
+    },
   ]
 
   return (
@@ -94,6 +119,13 @@ export default function AdminDashboard() {
             <h1 className="text-3xl font-bold text-white">Staff Dashboard</h1>
             <p className="mt-2 text-white/80 text-sm">
               Welcome, {user?.email}
+              {profile && (
+                <span className="ml-2 inline-block bg-white/20 text-white text-xs px-2 py-0.5 rounded">
+                  {profile.role === 'sctca_staff' ? 'SCTCA Staff'
+                    : profile.role === 'jurisdiction_staff' ? `Jurisdiction Staff${profile.orgName ? ` - ${profile.orgName}` : ''}`
+                    : 'Viewer'}
+                </span>
+              )}
             </p>
           </div>
           <button
@@ -121,6 +153,21 @@ export default function AdminDashboard() {
             <p className="mt-1 text-3xl font-bold text-[#313131]">{stats.orgs}</p>
           </div>
         </div>
+
+        {/* Role notice */}
+        {profile?.role === 'jurisdiction_staff' && profile.orgName && (
+          <div className="mb-6 p-4 rounded-md bg-[#f3d597]/20 border border-[#f3d597] text-[#313131] text-sm">
+            You can update action statuses for <strong>{profile.orgName}</strong>.
+            Need access to other organizations?{' '}
+            <Link href="/admin/roles" className="text-[#8ccacf] hover:underline">Update your role</Link>.
+          </div>
+        )}
+        {profile && profile.role === 'viewer' && (
+          <div className="mb-6 p-4 rounded-md bg-gray-50 border border-gray-200 text-[#313131] text-sm">
+            You currently have read-only access. To edit data,{' '}
+            <Link href="/admin/roles" className="text-[#8ccacf] hover:underline">set up your role</Link>.
+          </div>
+        )}
 
         {/* Quick Links */}
         <h2 className="text-lg font-semibold text-[#313131] mb-4">Quick Links</h2>

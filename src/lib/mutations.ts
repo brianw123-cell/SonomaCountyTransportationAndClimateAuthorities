@@ -226,6 +226,40 @@ export async function linkDocToOrg(docId: string, orgId: string) {
 }
 
 // ============================================================
+// INDIVIDUAL MUTATIONS
+// ============================================================
+
+export async function createIndividual(ind: {
+  ind_name: string
+  ind_email?: string | null
+  ind_title?: string | null
+  ind_phone?: string | null
+  ind_notes?: string | null
+}) {
+  const indId = await getNextId('IND', 'individuals', 'ind_id')
+  const { data, error } = await supabase
+    .from('individuals')
+    .insert({ ind_id: indId, ...ind })
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function linkIndToOrg(indId: string, orgId: string, role?: string) {
+  const relId = await getNextId('REL', 'org_ind', 'rel_id')
+  const { error } = await supabase.from('org_ind').insert({
+    rel_id: relId,
+    rel_from: orgId,
+    rel_to: indId,
+    name_from: orgId,
+    name_to: indId,
+    ind_role: role ?? null,
+  })
+  if (error) throw error
+}
+
+// ============================================================
 // USER ROLE MUTATIONS
 // ============================================================
 

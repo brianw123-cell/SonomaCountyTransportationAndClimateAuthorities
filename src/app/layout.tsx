@@ -50,6 +50,9 @@ export default function RootLayout({
                   Climate Action Tracker
                 </h1>
               </Link>
+              <span className="ml-auto text-lg sm:text-xl font-bold tracking-widest text-[#8ccacf]">
+                BETA
+              </span>
             </div>
             {/* Nav row: full width below logo */}
             <div className="pb-2 -mx-1 overflow-x-auto">
